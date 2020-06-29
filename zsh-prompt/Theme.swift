@@ -13,6 +13,7 @@ let COLORS_ENABLED = (ProcessInfo.processInfo.environment["ARIPORAD_IS_XCODE"] !
 
 enum Style {
     case prompt
+    case cwd
     case gitClean, gitDirty, gitUntrackedFiles, gitConflicted
     case error
 }
@@ -34,8 +35,12 @@ struct DefaultTheme: Theme {
     
     func getStyling(for style: Style) -> Styling? {
         switch (style) {
-        // PromptSegment
+        // Prompt
         case .prompt:            return nil;
+        
+        // DirectorySegment
+        case .cwd:               return nil;
+        
         
         // GitSegment
         case .gitClean:          return Styling(color: .blue , background: nil     , style: nil    )

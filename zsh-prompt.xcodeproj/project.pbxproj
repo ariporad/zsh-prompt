@@ -13,6 +13,7 @@
 		5FE74CAC24A9AC3500E7BDF6 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA424A9AC3400E7BDF6 /* Theme.swift */; };
 		5FE74CAD24A9AC3500E7BDF6 /* GitSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA624A9AC3500E7BDF6 /* GitSegment.swift */; };
 		5FE74CAF24A9C13A00E7BDF6 /* TextSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CAE24A9C13A00E7BDF6 /* TextSegment.swift */; };
+		5FE74CB124A9C4A100E7BDF6 /* DirectorySegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CB024A9C4A100E7BDF6 /* DirectorySegment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,7 @@
 		5FE74CA424A9AC3400E7BDF6 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5FE74CA624A9AC3500E7BDF6 /* GitSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitSegment.swift; sourceTree = "<group>"; };
 		5FE74CAE24A9C13A00E7BDF6 /* TextSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSegment.swift; sourceTree = "<group>"; };
+		5FE74CB024A9C4A100E7BDF6 /* DirectorySegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorySegment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 			children = (
 				5FE74CA624A9AC3500E7BDF6 /* GitSegment.swift */,
 				5FE74CAE24A9C13A00E7BDF6 /* TextSegment.swift */,
+				5FE74CB024A9C4A100E7BDF6 /* DirectorySegment.swift */,
 			);
 			path = Segments;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 				5FE74CAD24A9AC3500E7BDF6 /* GitSegment.swift in Sources */,
 				5FE74C9924A9ABD400E7BDF6 /* main.swift in Sources */,
 				5FE74CAF24A9C13A00E7BDF6 /* TextSegment.swift in Sources */,
+				5FE74CB124A9C4A100E7BDF6 /* DirectorySegment.swift in Sources */,
 				5FE74CAC24A9AC3500E7BDF6 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

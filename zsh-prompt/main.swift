@@ -9,10 +9,11 @@
 import Foundation
 
 // Set this to nil to run in CWD, or to a path
-let DEBUG_FORCE_PATH: String? = "/Users/ariporad/dev/zsh-prompt-3/zsh-prompt/test"
+let DEBUG_FORCE_PATH: String? = "/Users/ariporad" //"/Users/ariporad/dev/zsh-prompt-3/zsh-prompt/test"
 let DEBUG_OUTPUT: Bool = false;
 
 let SEGMENTS: [Segment] = [
+    DirectorySegment(),
     PrefixSuffixSegment(segment: GitSegment(), prefix: "[", suffix: "]"),
     TextSegment(name: "prompt", text: "$", style: .prompt)
 ]

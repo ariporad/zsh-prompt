@@ -31,21 +31,6 @@ struct GitSegment: Segment {
         
         public var description: String { "(GitSegment.Status: \(self.symbol ?? "<None>"), P: \(self.priority))" }
         
-        /*
-         o   ' ' = unmodified
-         o   M = modified
-
-         o   A = added
-
-         o   D = deleted
-
-         o   R = renamed
-
-         o   C = copied
-
-         o   U = updated but unmerged
-         */
-        
         static func from(changeSignifier: Character) -> Status? {
             switch changeSignifier {
             case "M", "A", "D", "R", "C": return .dirty
@@ -55,8 +40,6 @@ struct GitSegment: Segment {
             default:  return .unknown
             }
         }
-        
-
     }
 
     private struct GitStatusOutput {
@@ -103,14 +86,19 @@ struct GitSegment: Segment {
         proc.arguments = ["git", "status", "--porcelain=v1", "-b"]
         proc.currentDirectoryURL = path
         proc.standardOutput = stdout
+        proc.standardError = Pipe() // ignore
         
         guard (try? proc.run()) != nil else { return nil }
+        
+        proc.waitUntilExit()
+        
+        guard proc.terminationStatus == 0 else { return nil }
         
         return String(decoding: stdout.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
     }
     
     func generate(context: Context) -> SegmentOutcome  {
-        guard let statusOutput = runGitStatus(path: context.directory) else { return .fail(message: "Couldn't run git status", error: nil) }
+        guard let statusOutput = runGitStatus(path: context.directory) else { return .skip(reason: "Couldn't run git status", error: nil) }
         
         guard let parsedStatus = GitStatusOutput(stdout: statusOutput) else { return .fail(message: "Couldn't parse git status output", error: nil) }
         
