@@ -13,8 +13,8 @@ let DEBUG_FORCE_PATH: String? = "/Users/ariporad/dev/zsh-prompt-3/zsh-prompt/tes
 let DEBUG_OUTPUT: Bool = false;
 
 let SEGMENTS: [Segment] = [
-    GitSegment(),
-    PromptSegment(),
+    PrefixSuffixSegment(segment: GitSegment(), prefix: "[", suffix: "]"),
+    TextSegment(name: "prompt", text: "$", style: .prompt)
 ]
 
 let context = Context(directory: URL(fileURLWithPath: DEBUG_FORCE_PATH ?? FileManager.default.currentDirectoryPath, isDirectory: true))

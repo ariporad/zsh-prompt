@@ -9,11 +9,10 @@
 /* Begin PBXBuildFile section */
 		5FE74C9924A9ABD400E7BDF6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74C9824A9ABD400E7BDF6 /* main.swift */; };
 		5FE74CA824A9AC3500E7BDF6 /* Chalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA024A9AC3200E7BDF6 /* Chalk.swift */; };
-		5FE74CAA24A9AC3500E7BDF6 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA224A9AC3300E7BDF6 /* Helpers.swift */; };
 		5FE74CAB24A9AC3500E7BDF6 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA324A9AC3400E7BDF6 /* Segment.swift */; };
 		5FE74CAC24A9AC3500E7BDF6 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA424A9AC3400E7BDF6 /* Theme.swift */; };
 		5FE74CAD24A9AC3500E7BDF6 /* GitSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CA624A9AC3500E7BDF6 /* GitSegment.swift */; };
-		5FE74CAF24A9C13A00E7BDF6 /* PromptSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CAE24A9C13A00E7BDF6 /* PromptSegment.swift */; };
+		5FE74CAF24A9C13A00E7BDF6 /* TextSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE74CAE24A9C13A00E7BDF6 /* TextSegment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,11 +31,10 @@
 		5FE74C9524A9ABD400E7BDF6 /* zsh-prompt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "zsh-prompt"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FE74C9824A9ABD400E7BDF6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5FE74CA024A9AC3200E7BDF6 /* Chalk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chalk.swift; sourceTree = "<group>"; };
-		5FE74CA224A9AC3300E7BDF6 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		5FE74CA324A9AC3400E7BDF6 /* Segment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
 		5FE74CA424A9AC3400E7BDF6 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5FE74CA624A9AC3500E7BDF6 /* GitSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitSegment.swift; sourceTree = "<group>"; };
-		5FE74CAE24A9C13A00E7BDF6 /* PromptSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptSegment.swift; sourceTree = "<group>"; };
+		5FE74CAE24A9C13A00E7BDF6 /* TextSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSegment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +68,6 @@
 			isa = PBXGroup;
 			children = (
 				5FE74CA024A9AC3200E7BDF6 /* Chalk.swift */,
-				5FE74CA224A9AC3300E7BDF6 /* Helpers.swift */,
 				5FE74CA324A9AC3400E7BDF6 /* Segment.swift */,
 				5FE74CA524A9AC3500E7BDF6 /* Segments */,
 				5FE74CA424A9AC3400E7BDF6 /* Theme.swift */,
@@ -83,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				5FE74CA624A9AC3500E7BDF6 /* GitSegment.swift */,
-				5FE74CAE24A9C13A00E7BDF6 /* PromptSegment.swift */,
+				5FE74CAE24A9C13A00E7BDF6 /* TextSegment.swift */,
 			);
 			path = Segments;
 			sourceTree = "<group>";
@@ -149,9 +146,8 @@
 				5FE74CA824A9AC3500E7BDF6 /* Chalk.swift in Sources */,
 				5FE74CAB24A9AC3500E7BDF6 /* Segment.swift in Sources */,
 				5FE74CAD24A9AC3500E7BDF6 /* GitSegment.swift in Sources */,
-				5FE74CAA24A9AC3500E7BDF6 /* Helpers.swift in Sources */,
 				5FE74C9924A9ABD400E7BDF6 /* main.swift in Sources */,
-				5FE74CAF24A9C13A00E7BDF6 /* PromptSegment.swift in Sources */,
+				5FE74CAF24A9C13A00E7BDF6 /* TextSegment.swift in Sources */,
 				5FE74CAC24A9AC3500E7BDF6 /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

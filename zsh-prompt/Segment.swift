@@ -41,23 +41,11 @@ enum SegmentResult {
 protocol Segment {
     var name: String { get }
     
-    func generate(context: Context) throws -> SegmentOutcome;
+    func generate(context: Context) -> SegmentOutcome;
 }
 
 extension Segment {
-    func execute(context: Context) -> SegmentResult {
-        var outcome: SegmentOutcome
-        
-        do {
-            outcome = try self.generate(context: context)
-        } catch {
-            if let outcomeError = error as? SegmentOutcome {
-                outcome = outcomeError
-            } else {
-                outcome = .fail(message: "Unknown Error \(error.localizedDescription)", error: error)
-            }
-        }
-        
-        return SegmentResult.from(outcome: outcome, for: self)
+    func execute(context: Context) -> SegmentResult {        
+        return SegmentResult.from(outcome: self.generate(context: context), for: self)
     }
 }

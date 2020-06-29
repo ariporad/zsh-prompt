@@ -109,7 +109,7 @@ struct GitSegment: Segment {
         return String(decoding: stdout.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
     }
     
-    func generate(context: Context) throws -> SegmentOutcome  {
+    func generate(context: Context) -> SegmentOutcome  {
         guard let statusOutput = runGitStatus(path: context.directory) else { return .fail(message: "Couldn't run git status", error: nil) }
         
         guard let parsedStatus = GitStatusOutput(stdout: statusOutput) else { return .fail(message: "Couldn't parse git status output", error: nil) }
