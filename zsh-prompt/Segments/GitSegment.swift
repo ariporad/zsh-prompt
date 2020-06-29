@@ -11,7 +11,7 @@ import Foundation
 struct GitSegment: Segment {
     let name = "git"
     
-    private struct Status: Hashable, Comparable {
+    private struct Status: Hashable, Comparable, CustomStringConvertible {
         let priority: UInt32;
         
         let symbol: String?;
@@ -20,70 +20,101 @@ struct GitSegment: Segment {
         public static let clean          = Status(priority: 0, symbol: nil, style: .gitClean)
         public static let dirty          = Status(priority: 1, symbol: "*", style: .gitDirty)
         public static let untrackedFiles = Status(priority: 2, symbol: "+", style: .gitUntrackedFiles)
-        public static let conflicted     = Status(priority: 3, symbol: "!", style: .gitConflicted)
+        public static let unmerged       = Status(priority: 3, symbol: "!", style: .gitConflicted)
 
         public static let error          = Status(priority: 98, symbol: "¡", style: .error)
         public static let unknown        = Status(priority: 99, symbol: "¿", style: .error)
         
-        public static func from(rawStatus: Diff.Status) -> Status {
-            switch rawStatus {
-            case .current, .ignored: return .clean
-            case .indexNew, .indexModified, .i◊ndexDeleted, .indexRenamed, .indexTypeChange: return .dirty
-            case .workTreeModified, .workTreeDeleted, .workTreeTypeChange, .workTreeRenamed: return .dirty
-            case .workTreeNew: return .untrackedFiles
-            case .conflicted: return .conflicted
-            case .workTreeUnreadable: return .error
-            default: return .unknown
-            }
-        }
-        
         static func < (lhs: GitSegment.Status, rhs: GitSegment.Status) -> Bool {
             lhs.priority < rhs.priority
         }
-    }
-    
+        
+        public var description: String { "(GitSegment.Status: \(self.symbol ?? "<None>"), P: \(self.priority))" }
+        
+        /*
+         o   ' ' = unmodified
+         o   M = modified
 
-    
-    func generate(context: Context) throws -> SegmentOutcome  {
-        try skip(Repository.isValid(url: context.directory), reason: "No git repo in directory")
+         o   A = added
+
+         o   D = deleted
+
+         o   R = renamed
+
+         o   C = copied
+
+         o   U = updated but unmerged
+         */
         
-        let repo = try fail(Repository.at(context.directory), message: "Couldn't open repository")
-        
-        let latestCommit = try fail(repo.HEAD(), message: "Couldn't get HEAD");
-        let branchName = latestCommit.shortName ?? String(latestCommit.oid.description.prefix(7))
-        
-        let statusEntries = (try fail(repo.status(), message: "Couldn't check repo status"))
-        
-        print(statusEntries.count)
-        print(statusEntries)
-        
-        let rawStatuses = statusEntries.map { $0.status }
-            
-        var status: Set<Status> = Set([])
-        
-        print(rawStatuses)
-        
-        for rawStatus in rawStatuses {
-            let newStatus = Status.from(rawStatus: rawStatus)
-            status.update(with: newStatus)
+        static func from(changeSignifier: Character) -> Status? {
+            switch changeSignifier {
+            case "M", "A", "D", "R", "C": return .dirty
+            case " ": return .clean
+            case "?": return .untrackedFiles
+            case "U": return .unmerged
+            default:  return .unknown
+            }
         }
         
-        let symbols = status.sorted(by: <).map { $0.symbol ?? "" }.joined(separator: "")
-        let style = status.sorted(by: >).first { $0.style != nil }?.style
+
+    }
+
+    private struct GitStatusOutput {
+        let branchName: String;
+        let status: [Status];
         
-        return SegmentOutcome.success(text: "\(branchName)\(symbols)", style: style)
+        var symbols: String { status.compactMap { $0.symbol }.joined() }
         
-       
-        // TODO: handle statusEntrys
-//        var status: Set<Status> = Set()
-//
-//        statusEntrys.forEach {
-//            switch $0.status {
-//            case .current: return
-//            case .ignored
-//            }
-//        }
+        var effectiveStyle: Style? { status.last { $0.style != nil }?.style }
         
+        // This method has lots of room for optimization if we need it
+        init?(stdout: String) {
+            var lines = stdout.split(separator: "\n")
+            
+            self.branchName = String(lines.removeFirst().split(separator: " ")[1])
+            
+            var status: Set<Status> = []
+            
+            for line in lines {
+                let changeSignifier = line.prefix(2)
+                guard changeSignifier.count == 2 else { continue }
+                
+                for char in changeSignifier {
+                    guard let newStatus = Status.from(changeSignifier: char) else { continue }
+                    status.update(with: newStatus)
+                }
+            }
+
+            // Unmerged trumps everything else, because all other statuses have different meanings in a merge
+            // that we don't want to deal with
+            if status.contains(.unmerged) {
+                self.status = [.unmerged]
+            } else {
+                self.status = status.sorted(by: <)
+            }
+        }
+    }
+    
+    func runGitStatus(path: URL) -> String? {
+        let stdout = Pipe()
+        let proc = Process()
+        
+        proc.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+        proc.arguments = ["git", "status", "--porcelain=v1", "-b"]
+        proc.currentDirectoryURL = path
+        proc.standardOutput = stdout
+        
+        guard (try? proc.run()) != nil else { return nil }
+        
+        return String(decoding: stdout.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+    }
+    
+    func generate(context: Context) throws -> SegmentOutcome  {
+        guard let statusOutput = runGitStatus(path: context.directory) else { return .fail(message: "Couldn't run git status", error: nil) }
+        
+        guard let parsedStatus = GitStatusOutput(stdout: statusOutput) else { return .fail(message: "Couldn't parse git status output", error: nil) }
+        
+        return .success(text: "\(parsedStatus.branchName)\(parsedStatus.symbols)", style: parsedStatus.effectiveStyle)
     }
 }
 

@@ -12,6 +12,7 @@ import Foundation
 let COLORS_ENABLED = (ProcessInfo.processInfo.environment["ARIPORAD_IS_XCODE"] != "true" && ProcessInfo.processInfo.environment["NO_COLORS"] != "true") || ProcessInfo.processInfo.environment["FORCE_COLORS"] == "true"
 
 enum Style {
+    case prompt
     case gitClean, gitDirty, gitUntrackedFiles, gitConflicted
     case error
 }
@@ -33,11 +34,17 @@ struct DefaultTheme: Theme {
     
     func getStyling(for style: Style) -> Styling? {
         switch (style) {
-        case .gitClean:          return Styling(color: .blue, background: nil, style: nil)
-        case .gitDirty:          return Styling(color: .black, background: .yellow, style: nil)
-        case .gitConflicted:     return Styling(color: .cyan, background: .blue, style: .bold)
-        case .gitUntrackedFiles: return Styling(color: nil, background: .green, style: .blink)
-        case .error:             return Styling(color: nil, background: .magenta, style: .italic)
+        // PromptSegment
+        case .prompt:            return nil;
+        
+        // GitSegment
+        case .gitClean:          return Styling(color: .blue , background: nil     , style: nil    )
+        case .gitDirty:          return Styling(color: .black, background: .yellow , style: nil    )
+        case .gitConflicted:     return Styling(color: .cyan , background: .blue   , style: .bold  )
+        case .gitUntrackedFiles: return Styling(color: nil   , background: .green  , style: .blink )
+        
+        // Misc
+        case .error:             return Styling(color: nil   , background: .magenta, style: .italic)
         }
     }
 }
